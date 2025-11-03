@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
 
 import httpx
 
@@ -12,12 +12,12 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     index_name: str,
     *,
-    path: Union[None, Unset, str] = UNSET,
-    overwrite: Union[Unset, bool] = False,
+    path: None | str | Unset = UNSET,
+    overwrite: bool | Unset = False,
 ) -> dict[str, Any]:
     params: dict[str, Any] = {}
 
-    json_path: Union[None, Unset, str]
+    json_path: None | str | Unset
     if isinstance(path, Unset):
         json_path = UNSET
     else:
@@ -38,8 +38,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, HTTPValidationError]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | HTTPValidationError | None:
     if response.status_code == 200:
         response_200 = response.json()
         return response_200
@@ -56,8 +56,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, HTTPValidationError]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | HTTPValidationError]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -69,10 +69,10 @@ def _build_response(
 def sync_detailed(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
-    path: Union[None, Unset, str] = UNSET,
-    overwrite: Union[Unset, bool] = False,
-) -> Response[Union[Any, HTTPValidationError]]:
+    client: AuthenticatedClient | Client,
+    path: None | str | Unset = UNSET,
+    overwrite: bool | Unset = False,
+) -> Response[Any | HTTPValidationError]:
     r"""Load Index Data from Disk
 
      Load an existing index from disk at a specified location.
@@ -93,8 +93,8 @@ def sync_detailed(
 
     Args:
         index_name (str):
-        path (Union[None, Unset, str]): Path to load the index from
-        overwrite (Union[Unset, bool]): Overwrite the existing index if it already exists Default:
+        path (None | str | Unset): Path to load the index from
+        overwrite (bool | Unset): Overwrite the existing index if it already exists Default:
             False.
 
     Raises:
@@ -102,7 +102,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Any | HTTPValidationError]
     """
 
     kwargs = _get_kwargs(
@@ -121,10 +121,10 @@ def sync_detailed(
 def sync(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
-    path: Union[None, Unset, str] = UNSET,
-    overwrite: Union[Unset, bool] = False,
-) -> Optional[Union[Any, HTTPValidationError]]:
+    client: AuthenticatedClient | Client,
+    path: None | str | Unset = UNSET,
+    overwrite: bool | Unset = False,
+) -> Any | HTTPValidationError | None:
     r"""Load Index Data from Disk
 
      Load an existing index from disk at a specified location.
@@ -145,8 +145,8 @@ def sync(
 
     Args:
         index_name (str):
-        path (Union[None, Unset, str]): Path to load the index from
-        overwrite (Union[Unset, bool]): Overwrite the existing index if it already exists Default:
+        path (None | str | Unset): Path to load the index from
+        overwrite (bool | Unset): Overwrite the existing index if it already exists Default:
             False.
 
     Raises:
@@ -154,7 +154,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, HTTPValidationError]
+        Any | HTTPValidationError
     """
 
     return sync_detailed(
@@ -168,10 +168,10 @@ def sync(
 async def asyncio_detailed(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
-    path: Union[None, Unset, str] = UNSET,
-    overwrite: Union[Unset, bool] = False,
-) -> Response[Union[Any, HTTPValidationError]]:
+    client: AuthenticatedClient | Client,
+    path: None | str | Unset = UNSET,
+    overwrite: bool | Unset = False,
+) -> Response[Any | HTTPValidationError]:
     r"""Load Index Data from Disk
 
      Load an existing index from disk at a specified location.
@@ -192,8 +192,8 @@ async def asyncio_detailed(
 
     Args:
         index_name (str):
-        path (Union[None, Unset, str]): Path to load the index from
-        overwrite (Union[Unset, bool]): Overwrite the existing index if it already exists Default:
+        path (None | str | Unset): Path to load the index from
+        overwrite (bool | Unset): Overwrite the existing index if it already exists Default:
             False.
 
     Raises:
@@ -201,7 +201,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Any | HTTPValidationError]
     """
 
     kwargs = _get_kwargs(
@@ -218,10 +218,10 @@ async def asyncio_detailed(
 async def asyncio(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
-    path: Union[None, Unset, str] = UNSET,
-    overwrite: Union[Unset, bool] = False,
-) -> Optional[Union[Any, HTTPValidationError]]:
+    client: AuthenticatedClient | Client,
+    path: None | str | Unset = UNSET,
+    overwrite: bool | Unset = False,
+) -> Any | HTTPValidationError | None:
     r"""Load Index Data from Disk
 
      Load an existing index from disk at a specified location.
@@ -242,8 +242,8 @@ async def asyncio(
 
     Args:
         index_name (str):
-        path (Union[None, Unset, str]): Path to load the index from
-        overwrite (Union[Unset, bool]): Overwrite the existing index if it already exists Default:
+        path (None | str | Unset): Path to load the index from
+        overwrite (bool | Unset): Overwrite the existing index if it already exists Default:
             False.
 
     Raises:
@@ -251,7 +251,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, HTTPValidationError]
+        Any | HTTPValidationError
     """
 
     return (

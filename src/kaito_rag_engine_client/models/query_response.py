@@ -9,45 +9,41 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.node_with_score_metadata_type_0 import NodeWithScoreMetadataType0
+    from ..models.node_with_score import NodeWithScore
+    from ..models.query_response_metadata_type_0 import QueryResponseMetadataType0
 
 
-T = TypeVar("T", bound="NodeWithScore")
+T = TypeVar("T", bound="QueryResponse")
 
 
 @_attrs_define
-class NodeWithScore:
+class QueryResponse:
     """
     Attributes:
-        doc_id (str):
-        node_id (str):
-        text (str):
-        score (float):
-        metadata (NodeWithScoreMetadataType0 | None | Unset):
+        response (str):
+        source_nodes (list[NodeWithScore]):
+        metadata (None | QueryResponseMetadataType0 | Unset):
     """
 
-    doc_id: str
-    node_id: str
-    text: str
-    score: float
-    metadata: NodeWithScoreMetadataType0 | None | Unset = UNSET
+    response: str
+    source_nodes: list[NodeWithScore]
+    metadata: None | QueryResponseMetadataType0 | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.node_with_score_metadata_type_0 import NodeWithScoreMetadataType0
+        from ..models.query_response_metadata_type_0 import QueryResponseMetadataType0
 
-        doc_id = self.doc_id
+        response = self.response
 
-        node_id = self.node_id
-
-        text = self.text
-
-        score = self.score
+        source_nodes = []
+        for source_nodes_item_data in self.source_nodes:
+            source_nodes_item = source_nodes_item_data.to_dict()
+            source_nodes.append(source_nodes_item)
 
         metadata: dict[str, Any] | None | Unset
         if isinstance(self.metadata, Unset):
             metadata = UNSET
-        elif isinstance(self.metadata, NodeWithScoreMetadataType0):
+        elif isinstance(self.metadata, QueryResponseMetadataType0):
             metadata = self.metadata.to_dict()
         else:
             metadata = self.metadata
@@ -56,10 +52,8 @@ class NodeWithScore:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "doc_id": doc_id,
-                "node_id": node_id,
-                "text": text,
-                "score": score,
+                "response": response,
+                "source_nodes": source_nodes,
             }
         )
         if metadata is not UNSET:
@@ -69,18 +63,20 @@ class NodeWithScore:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.node_with_score_metadata_type_0 import NodeWithScoreMetadataType0
+        from ..models.node_with_score import NodeWithScore
+        from ..models.query_response_metadata_type_0 import QueryResponseMetadataType0
 
         d = dict(src_dict)
-        doc_id = d.pop("doc_id")
+        response = d.pop("response")
 
-        node_id = d.pop("node_id")
+        source_nodes = []
+        _source_nodes = d.pop("source_nodes")
+        for source_nodes_item_data in _source_nodes:
+            source_nodes_item = NodeWithScore.from_dict(source_nodes_item_data)
 
-        text = d.pop("text")
+            source_nodes.append(source_nodes_item)
 
-        score = d.pop("score")
-
-        def _parse_metadata(data: object) -> NodeWithScoreMetadataType0 | None | Unset:
+        def _parse_metadata(data: object) -> None | QueryResponseMetadataType0 | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -88,25 +84,23 @@ class NodeWithScore:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                metadata_type_0 = NodeWithScoreMetadataType0.from_dict(data)
+                metadata_type_0 = QueryResponseMetadataType0.from_dict(data)
 
                 return metadata_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(NodeWithScoreMetadataType0 | None | Unset, data)
+            return cast(None | QueryResponseMetadataType0 | Unset, data)
 
         metadata = _parse_metadata(d.pop("metadata", UNSET))
 
-        node_with_score = cls(
-            doc_id=doc_id,
-            node_id=node_id,
-            text=text,
-            score=score,
+        query_response = cls(
+            response=response,
+            source_nodes=source_nodes,
             metadata=metadata,
         )
 
-        node_with_score.additional_properties = d
-        return node_with_score
+        query_response.additional_properties = d
+        return query_response
 
     @property
     def additional_keys(self) -> list[str]:

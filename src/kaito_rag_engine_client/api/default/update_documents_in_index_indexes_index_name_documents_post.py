@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
 
 import httpx
 
@@ -32,8 +32,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[HTTPValidationError, UpdateDocumentResponse]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> HTTPValidationError | UpdateDocumentResponse | None:
     if response.status_code == 200:
         response_200 = UpdateDocumentResponse.from_dict(response.json())
 
@@ -51,8 +51,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[HTTPValidationError, UpdateDocumentResponse]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[HTTPValidationError | UpdateDocumentResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -64,9 +64,9 @@ def _build_response(
 def sync_detailed(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient | Client,
     body: UpdateDocumentRequest,
-) -> Response[Union[HTTPValidationError, UpdateDocumentResponse]]:
+) -> Response[HTTPValidationError | UpdateDocumentResponse]:
     r"""Update documents in an Index
 
      Update document in an Index.
@@ -97,7 +97,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, UpdateDocumentResponse]]
+        Response[HTTPValidationError | UpdateDocumentResponse]
     """
 
     kwargs = _get_kwargs(
@@ -115,9 +115,9 @@ def sync_detailed(
 def sync(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient | Client,
     body: UpdateDocumentRequest,
-) -> Optional[Union[HTTPValidationError, UpdateDocumentResponse]]:
+) -> HTTPValidationError | UpdateDocumentResponse | None:
     r"""Update documents in an Index
 
      Update document in an Index.
@@ -148,7 +148,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, UpdateDocumentResponse]
+        HTTPValidationError | UpdateDocumentResponse
     """
 
     return sync_detailed(
@@ -161,9 +161,9 @@ def sync(
 async def asyncio_detailed(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient | Client,
     body: UpdateDocumentRequest,
-) -> Response[Union[HTTPValidationError, UpdateDocumentResponse]]:
+) -> Response[HTTPValidationError | UpdateDocumentResponse]:
     r"""Update documents in an Index
 
      Update document in an Index.
@@ -194,7 +194,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, UpdateDocumentResponse]]
+        Response[HTTPValidationError | UpdateDocumentResponse]
     """
 
     kwargs = _get_kwargs(
@@ -210,9 +210,9 @@ async def asyncio_detailed(
 async def asyncio(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient | Client,
     body: UpdateDocumentRequest,
-) -> Optional[Union[HTTPValidationError, UpdateDocumentResponse]]:
+) -> HTTPValidationError | UpdateDocumentResponse | None:
     r"""Update documents in an Index
 
      Update document in an Index.
@@ -243,7 +243,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, UpdateDocumentResponse]
+        HTTPValidationError | UpdateDocumentResponse
     """
 
     return (
