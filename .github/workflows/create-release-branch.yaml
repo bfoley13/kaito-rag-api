@@ -10,6 +10,7 @@ on:
 permissions:
   id-token: write
   contents: write
+  pull-requests: write
   packages: write
 
 env:
@@ -64,7 +65,7 @@ jobs:
           git push origin HEAD:$RELEASE_BRANCH
           echo "Release branch '$RELEASE_BRANCH' created and changes pushed."
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v5.6.1
+        uses: peter-evans/create-pull-request@v7.0.8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Update client code for kaito-rag-engine v${{ github.event.inputs.kaito_rag_engine_version }}
