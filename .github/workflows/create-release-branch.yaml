@@ -51,7 +51,7 @@ jobs:
       - name: Run kaito_rag_engine container and download openapi.json
         run: |
           docker run --rm \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ github.event.inputs.kaito_rag_engine_version }} python3 main.py
+            ${{ env.REGISTRY }}/kaito-project/kaito/${{ env.IMAGE_NAME }}:${{ github.event.inputs.kaito_rag_engine_version }} python3 main.py
           wget http://localhost:5000/openapi.json -O openapi.json
       - name: Generate updated client code
         run: |
