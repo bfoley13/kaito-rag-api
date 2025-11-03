@@ -84,8 +84,8 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "Update client code for kaito-rag-engine v${{ github.event.inputs.kaito_rag_engine_version }}"
-          git push --set-upstream origin $RELEASE_BRANCH
-          echo "Release branch '$RELEASE_BRANCH' created and changes pushed."
+          git push --set-upstream origin release-${{ github.event.inputs.kaito_rag_engine_version }}
+          echo "Release branch 'release-${{ github.event.inputs.kaito_rag_engine_version }}' created and changes pushed."
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7.0.8
         with:
