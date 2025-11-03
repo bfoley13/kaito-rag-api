@@ -6,51 +6,28 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-T = TypeVar("T", bound="FunctionCall")
+T = TypeVar("T", bound="QueryResponseMetadataType0")
 
 
 @_attrs_define
-class FunctionCall:
-    """
-    Attributes:
-        arguments (str):
-        name (str):
-    """
+class QueryResponseMetadataType0:
+    """ """
 
-    arguments: str
-    name: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        arguments = self.arguments
-
-        name = self.name
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "arguments": arguments,
-                "name": name,
-            }
-        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        arguments = d.pop("arguments")
+        query_response_metadata_type_0 = cls()
 
-        name = d.pop("name")
-
-        function_call = cls(
-            arguments=arguments,
-            name=name,
-        )
-
-        function_call.additional_properties = d
-        return function_call
+        query_response_metadata_type_0.additional_properties = d
+        return query_response_metadata_type_0
 
     @property
     def additional_keys(self) -> list[str]:

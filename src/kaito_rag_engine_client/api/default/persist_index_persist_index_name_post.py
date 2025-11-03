@@ -1,42 +1,39 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.delete_document_request import DeleteDocumentRequest
-from ...models.delete_document_response import DeleteDocumentResponse
 from ...models.http_validation_error import HTTPValidationError
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     index_name: str,
     *,
-    body: DeleteDocumentRequest,
+    path: str | Unset = "storage",
 ) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
+    params: dict[str, Any] = {}
+
+    params["path"] = path
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": f"/indexes/{index_name}/documents/delete",
+        "url": f"/persist/{index_name}",
+        "params": params,
     }
 
-    _kwargs["json"] = body.to_dict()
-
-    headers["Content-Type"] = "application/json"
-
-    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[DeleteDocumentResponse, HTTPValidationError]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | HTTPValidationError | None:
     if response.status_code == 200:
-        response_200 = DeleteDocumentResponse.from_dict(response.json())
-
+        response_200 = response.json()
         return response_200
 
     if response.status_code == 422:
@@ -51,8 +48,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[DeleteDocumentResponse, HTTPValidationError]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | HTTPValidationError]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -64,42 +61,43 @@ def _build_response(
 def sync_detailed(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
-    body: DeleteDocumentRequest,
-) -> Response[Union[DeleteDocumentResponse, HTTPValidationError]]:
-    r"""Delete documents in an Index
+    client: AuthenticatedClient | Client,
+    path: str | Unset = "storage",
+) -> Response[Any | HTTPValidationError]:
+    r"""Persist Index Data to Disk
 
-     Delete document in an Index by their ids.
+     Persist the existing index data to disk at a specified location. This ensures that indexed data is
+    saved.
 
         ## Request Example:
-        ```json
-        POST /indexes/test_index/documents/delete
-        {\"doc_ids\": [\"doc_id_1\", \"doc_id_2\", \"doc_id_3\"]}
         ```
+        POST /persist/example_index?path=./custom_path
+        ```
+
+        If no path is provided, the index will be persisted in the default directory.
 
         ## Response Example:
         ```json
         {
-            \"deleted_doc_ids\": [\"doc_id_1\", \"doc_id_2\"],
-            \"not_found_doc_ids\": [\"doc_id_3\"]
-        },
+          \"message\": \"Successfully persisted index example_index to ./custom_path/example_index.\"
+        }
         ```
 
     Args:
         index_name (str):
-        body (DeleteDocumentRequest):
+        path (str | Unset): Path where the index will be persisted Default: 'storage'.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[DeleteDocumentResponse, HTTPValidationError]]
+        Response[Any | HTTPValidationError]
     """
 
     kwargs = _get_kwargs(
         index_name=index_name,
-        body=body,
+        path=path,
     )
 
     response = client.get_httpx_client().request(
@@ -112,85 +110,87 @@ def sync_detailed(
 def sync(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
-    body: DeleteDocumentRequest,
-) -> Optional[Union[DeleteDocumentResponse, HTTPValidationError]]:
-    r"""Delete documents in an Index
+    client: AuthenticatedClient | Client,
+    path: str | Unset = "storage",
+) -> Any | HTTPValidationError | None:
+    r"""Persist Index Data to Disk
 
-     Delete document in an Index by their ids.
+     Persist the existing index data to disk at a specified location. This ensures that indexed data is
+    saved.
 
         ## Request Example:
-        ```json
-        POST /indexes/test_index/documents/delete
-        {\"doc_ids\": [\"doc_id_1\", \"doc_id_2\", \"doc_id_3\"]}
         ```
+        POST /persist/example_index?path=./custom_path
+        ```
+
+        If no path is provided, the index will be persisted in the default directory.
 
         ## Response Example:
         ```json
         {
-            \"deleted_doc_ids\": [\"doc_id_1\", \"doc_id_2\"],
-            \"not_found_doc_ids\": [\"doc_id_3\"]
-        },
+          \"message\": \"Successfully persisted index example_index to ./custom_path/example_index.\"
+        }
         ```
 
     Args:
         index_name (str):
-        body (DeleteDocumentRequest):
+        path (str | Unset): Path where the index will be persisted Default: 'storage'.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[DeleteDocumentResponse, HTTPValidationError]
+        Any | HTTPValidationError
     """
 
     return sync_detailed(
         index_name=index_name,
         client=client,
-        body=body,
+        path=path,
     ).parsed
 
 
 async def asyncio_detailed(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
-    body: DeleteDocumentRequest,
-) -> Response[Union[DeleteDocumentResponse, HTTPValidationError]]:
-    r"""Delete documents in an Index
+    client: AuthenticatedClient | Client,
+    path: str | Unset = "storage",
+) -> Response[Any | HTTPValidationError]:
+    r"""Persist Index Data to Disk
 
-     Delete document in an Index by their ids.
+     Persist the existing index data to disk at a specified location. This ensures that indexed data is
+    saved.
 
         ## Request Example:
-        ```json
-        POST /indexes/test_index/documents/delete
-        {\"doc_ids\": [\"doc_id_1\", \"doc_id_2\", \"doc_id_3\"]}
         ```
+        POST /persist/example_index?path=./custom_path
+        ```
+
+        If no path is provided, the index will be persisted in the default directory.
 
         ## Response Example:
         ```json
         {
-            \"deleted_doc_ids\": [\"doc_id_1\", \"doc_id_2\"],
-            \"not_found_doc_ids\": [\"doc_id_3\"]
-        },
+          \"message\": \"Successfully persisted index example_index to ./custom_path/example_index.\"
+        }
         ```
 
     Args:
         index_name (str):
-        body (DeleteDocumentRequest):
+        path (str | Unset): Path where the index will be persisted Default: 'storage'.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[DeleteDocumentResponse, HTTPValidationError]]
+        Response[Any | HTTPValidationError]
     """
 
     kwargs = _get_kwargs(
         index_name=index_name,
-        body=body,
+        path=path,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -201,43 +201,44 @@ async def asyncio_detailed(
 async def asyncio(
     index_name: str,
     *,
-    client: Union[AuthenticatedClient, Client],
-    body: DeleteDocumentRequest,
-) -> Optional[Union[DeleteDocumentResponse, HTTPValidationError]]:
-    r"""Delete documents in an Index
+    client: AuthenticatedClient | Client,
+    path: str | Unset = "storage",
+) -> Any | HTTPValidationError | None:
+    r"""Persist Index Data to Disk
 
-     Delete document in an Index by their ids.
+     Persist the existing index data to disk at a specified location. This ensures that indexed data is
+    saved.
 
         ## Request Example:
-        ```json
-        POST /indexes/test_index/documents/delete
-        {\"doc_ids\": [\"doc_id_1\", \"doc_id_2\", \"doc_id_3\"]}
         ```
+        POST /persist/example_index?path=./custom_path
+        ```
+
+        If no path is provided, the index will be persisted in the default directory.
 
         ## Response Example:
         ```json
         {
-            \"deleted_doc_ids\": [\"doc_id_1\", \"doc_id_2\"],
-            \"not_found_doc_ids\": [\"doc_id_3\"]
-        },
+          \"message\": \"Successfully persisted index example_index to ./custom_path/example_index.\"
+        }
         ```
 
     Args:
         index_name (str):
-        body (DeleteDocumentRequest):
+        path (str | Unset): Path where the index will be persisted Default: 'storage'.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[DeleteDocumentResponse, HTTPValidationError]
+        Any | HTTPValidationError
     """
 
     return (
         await asyncio_detailed(
             index_name=index_name,
             client=client,
-            body=body,
+            path=path,
         )
     ).parsed
