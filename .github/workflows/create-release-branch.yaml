@@ -50,9 +50,27 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Run kaito_rag_engine container and download openapi.json
         run: |
-          docker run --rm \
+          # Start container in background with port mapping
+          docker run --rm -d --name kaito-rag-engine \
+            -p 5000:5000 \
             ${{ env.REGISTRY }}/kaito-project/kaito/${{ env.IMAGE_NAME }}:${{ github.event.inputs.kaito_rag_engine_version }} python3 main.py
+          
+          # Wait for service to be ready
+          echo "Waiting for service to start..."
+          for i in {1..30}; do
+            if curl -s http://localhost:5000/health > /dev/null 2>&1 || curl -s http://localhost:5000/ > /dev/null 2>&1; then
+              echo "Service is ready!"
+              break
+            fi
+            echo "Attempt $i: Service not ready yet, waiting 2 seconds..."
+            sleep 2
+          done
+          
+          # Download openapi.json
           wget http://localhost:5000/openapi.json -O openapi.json
+          
+          # Stop the container
+          docker stop kaito-rag-engine
       - name: Generate updated client code
         run: |
           make generate-client
