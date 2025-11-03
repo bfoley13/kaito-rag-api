@@ -74,6 +74,10 @@ jobs:
       - name: Generate updated client code
         run: |
           make generate-client
+      - name: Update pyproject version
+        run: |
+          VERSION="${{ github.event.inputs.kaito_rag_engine_version }}"
+          sed -i "s/^version = .*/version = \"$VERSION\"/" pyproject.toml
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
